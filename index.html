@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Node.js Basics Quiz</title>
+    <title>Prompt Engineering Quiz</title>
     <style>
         * {
             box-sizing: border-box;
@@ -13,7 +13,7 @@
         }
         
         body {
-            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -26,8 +26,10 @@
             border-radius: 15px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
             width: 90%;
-            max-width: 700px;
+            max-width: 800px;
             padding: 30px;
+            max-height: 90vh;
+            overflow-y: auto;
         }
         
         h1 {
@@ -43,6 +45,36 @@
             margin-bottom: 30px;
             font-size: 1.1rem;
             line-height: 1.5;
+        }
+        
+        .modules {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+            justify-content: center;
+        }
+        
+        .module-btn {
+            padding: 10px 15px;
+            background-color: #f0f4ff;
+            border: 2px solid #a777e3;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            color: #6e8efb;
+        }
+        
+        .module-btn:hover {
+            background-color: #e0e7ff;
+            transform: translateY(-2px);
+        }
+        
+        .module-btn.active {
+            background-color: #6e8efb;
+            color: white;
+            border-color: #6e8efb;
         }
         
         .question {
@@ -118,12 +150,12 @@
         }
         
         #next-btn {
-            background-color: #007bff;
+            background-color: #6e8efb;
             color: white;
         }
         
         #next-btn:hover {
-            background-color: #0069d9;
+            background-color: #5d7ce0;
         }
         
         #submit-btn {
@@ -181,12 +213,30 @@
             line-height: 1.5;
             color: #444;
         }
+        
+        .module-title {
+            text-align: center;
+            color: #6e8efb;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>Node.js Basics Quiz</h1>
-        <p class="description">Test your knowledge of Node.js fundamentals with this interactive quiz. Select the best answer for each question.</p>
+        <h1>Prompt Engineering Quiz</h1>
+        <p class="description">Test your knowledge of prompt engineering with this comprehensive quiz covering 5 modules.</p>
+        
+        <div class="modules">
+            <button class="module-btn active" data-module="1">Module 1</button>
+            <button class="module-btn" data-module="2">Module 2</button>
+            <button class="module-btn" data-module="3">Module 3</button>
+            <button class="module-btn" data-module="4">Module 4</button>
+            <button class="module-btn" data-module="5">Module 5</button>
+        </div>
+        
+        <div class="module-title" id="module-title">Module 1: Fundamentals of Prompt Engineering</div>
         
         <div class="progress">Question <span id="current">1</span> of <span id="total">10</span></div>
         
@@ -202,7 +252,7 @@
         
         <div id="result" class="result">
             <h2>Quiz Completed!</h2>
-            <div class="score">Your score: <span id="score-value">0</span>/10</div>
+            <div class="score">Your score: <span id="score-value">0</span>/50</div>
             <p class="message" id="result-message"></p>
             <button id="restart-btn">Restart Quiz</button>
         </div>
@@ -211,121 +261,623 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const questions = [
+                // Module 1: Fundamentals of Prompt Engineering
                 {
-                    question: "What is Node.js?",
+                    module: 1,
+                    question: "What is prompt engineering?",
                     options: [
-                        "A JavaScript framework for building front-end applications",
-                        "A runtime environment that allows JavaScript to run on the server",
-                        "A package manager for JavaScript",
-                        "A database management system"
-                    ],
-                    correct: 1,
-                    explanation: "Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. It allows JavaScript to run on the server rather than only in the browser."
-                },
-                {
-                    question: "Which of the following is a core module in Node.js?",
-                    options: [
-                        "express",
-                        "mongoose",
-                        "fs",
-                        "react"
-                    ],
-                    correct: 2,
-                    explanation: "The 'fs' module is a core Node.js module for working with the file system. Express and Mongoose are third-party packages, and React is a front-end library."
-                },
-                {
-                    question: "What does the require() function do in Node.js?",
-                    options: [
-                        "It makes an HTTP request to a server",
-                        "It includes external modules that can be in the form of built-in modules, third-party modules, or custom modules",
-                        "It is used to define a new variable",
-                        "It checks if a certain condition is true"
-                    ],
-                    correct: 1,
-                    explanation: "The require() function is used in Node.js to import modules. This can include core Node.js modules, modules installed via npm, or your own custom JavaScript files."
-                },
-                {
-                    question: "Which method is used to handle asynchronous operations in Node.js?",
-                    options: [
-                        "Callbacks",
-                        "For loops",
-                        "While loops",
-                        "If-else statements"
+                        "The process of designing and refining inputs to get desired outputs from AI models",
+                        "A method for programming faster code",
+                        "The engineering of quick response systems",
+                        "A technique for database optimization"
                     ],
                     correct: 0,
-                    explanation: "Callbacks are the traditional method for handling asynchronous operations in Node.js. However, modern Node.js also supports Promises and async/await for handling asynchronous code."
+                    explanation: "Prompt engineering is the practice of designing and refining inputs (prompts) to elicit specific, desired outputs from AI models, particularly large language models."
                 },
                 {
-                    question: "What is the purpose of the package.json file in a Node.js project?",
+                    module: 1,
+                    question: "Which of these is NOT a key component of a good prompt?",
                     options: [
-                        "It contains the source code of the application",
-                        "It stores the database credentials",
-                        "It holds metadata about the project and its dependencies",
-                        "It is used to configure the web server"
-                    ],
-                    correct: 2,
-                    explanation: "The package.json file holds various metadata relevant to the project, including project name, version, description, and most importantly, the list of dependencies required for the project to run."
-                },
-                {
-                    question: "Which global object in Node.js provides information about the current module?",
-                    options: [
-                        "global",
-                        "process",
-                        "module",
-                        "console"
-                    ],
-                    correct: 2,
-                    explanation: "The 'module' object is a reference to the current module. It contains information about the current module, including its exports, filename, and directory path."
-                },
-                {
-                    question: "What is the Event Loop in Node.js?",
-                    options: [
-                        "A function that loops through events in the code",
-                        "A feature that allows Node.js to perform non-blocking I/O operations",
-                        "A module for handling user events",
-                        "A loop that checks for errors in the code"
+                        "Clear instructions",
+                        "Ambiguous language",
+                        "Specific context",
+                        "Desired output format"
                     ],
                     correct: 1,
-                    explanation: "The Event Loop is what allows Node.js to perform non-blocking I/O operations — despite JavaScript being single-threaded — by offloading operations to the system kernel whenever possible."
+                    explanation: "Ambiguous language should be avoided in prompts as it can lead to unpredictable or undesired outputs from the AI model."
                 },
                 {
-                    question: "Which of the following is NOT a built-in module in Node.js?",
+                    module: 1,
+                    question: "What does 'zero-shot' prompting mean?",
                     options: [
-                        "http",
-                        "path",
-                        "crypto",
-                        "router"
+                        "Asking the model to perform a task without any examples",
+                        "Prompting with zero context",
+                        "A prompt that gets zero responses",
+                        "Asking for no shots in the response"
                     ],
-                    correct: 3,
-                    explanation: "The 'router' is not a built-in module in Node.js. It is typically part of frameworks like Express.js. http, path, and crypto are all core Node.js modules."
+                    correct: 0,
+                    explanation: "Zero-shot prompting involves asking the model to perform a task without providing any examples, relying solely on its pre-trained knowledge."
                 },
                 {
-                    question: "How can you install a package locally using npm?",
+                    module: 1,
+                    question: "What is the primary goal of iterative prompt refinement?",
                     options: [
-                        "npm install -g package-name",
-                        "npm install package-name",
-                        "npm add package-name",
-                        "npm get package-name"
+                        "To gradually improve the quality of AI responses",
+                        "To make prompts shorter each time",
+                        "To reduce the number of API calls",
+                        "To eliminate all errors from the model"
                     ],
-                    correct: 1,
-                    explanation: "The command 'npm install package-name' installs a package locally in the current project folder. The -g flag would install it globally instead."
+                    correct: 0,
+                    explanation: "Iterative prompt refinement involves gradually improving prompts through testing and adjustment to get better, more accurate responses from the AI model."
                 },
                 {
-                    question: "What is the purpose of the __dirname variable in Node.js?",
+                    module: 1,
+                    question: "Which technique involves providing examples in the prompt?",
                     options: [
-                        "It returns the name of the current directory",
-                        "It returns the directory name of the current module",
-                        "It returns the name of the root directory",
-                        "It returns the name of the user's home directory"
+                        "Few-shot prompting",
+                        "Zero-shot prompting",
+                        "Chain-of-thought prompting",
+                        "Role-playing prompting"
                     ],
-                    correct: 1,
-                    explanation: "The __dirname variable returns the directory name of the current module. This is the absolute path of the directory containing the currently executing file."
+                    correct: 0,
+                    explanation: "Few-shot prompting involves providing examples in the prompt to guide the model toward the desired type of response."
+                },
+                {
+                    module: 1,
+                    question: "What is 'temperature' in the context of AI models?",
+                    options: [
+                        "A parameter that controls the randomness of outputs",
+                        "The speed at which the model processes requests",
+                        "A measure of how hot the server gets",
+                        "The accuracy of the model's responses"
+                    ],
+                    correct: 0,
+                    explanation: "Temperature is a parameter that controls the randomness of the model's outputs. Higher values make outputs more random, while lower values make them more deterministic."
+                },
+                {
+                    module: 1,
+                    question: "Why is specificity important in prompt engineering?",
+                    options: [
+                        "It helps the model understand exactly what is being asked",
+                        "It makes prompts longer and more detailed",
+                        "It increases the computational cost",
+                        "It ensures the model responds faster"
+                    ],
+                    correct: 0,
+                    explanation: "Specificity helps eliminate ambiguity and guides the model toward the exact type of response desired, improving the relevance and accuracy of outputs."
+                },
+                {
+                    module: 1,
+                    question: "What does 'token' refer to in language models?",
+                    options: [
+                        "A unit of text that the model processes",
+                        "A security key for API access",
+                        "A type of prompt template",
+                        "A measure of response quality"
+                    ],
+                    correct: 0,
+                    explanation: "In language models, a token is a unit of text, which can be as short as one character or as long as one word, that the model processes."
+                },
+                {
+                    module: 1,
+                    question: "Which of these is a common prompt engineering mistake?",
+                    options: [
+                        "Being too vague or ambiguous",
+                        "Using complete sentences",
+                        "Providing clear context",
+                        "Specifying the desired format"
+                    ],
+                    correct: 0,
+                    explanation: "Being too vague or ambiguous is a common mistake that can lead to irrelevant or inaccurate responses from the AI model."
+                },
+                {
+                    module: 1,
+                    question: "What is the purpose of using delimiters in prompts?",
+                    options: [
+                        "To clearly separate different parts of the prompt",
+                        "To make the prompt look more professional",
+                        "To reduce the token count",
+                        "To encrypt the prompt content"
+                    ],
+                    correct: 0,
+                    explanation: "Delimiters like quotation marks, XML tags, or section headings help separate different parts of the prompt, making it easier for the model to understand the structure."
+                },
+
+                // Module 2: Advanced Prompting Techniques
+                {
+                    module: 2,
+                    question: "What is 'chain-of-thought' prompting?",
+                    options: [
+                        "Asking the model to explain its reasoning step by step",
+                        "Linking multiple prompts together",
+                        "A method for connecting different AI models",
+                        "Creating a sequence of related questions"
+                    ],
+                    correct: 0,
+                    explanation: "Chain-of-thought prompting encourages the model to break down its reasoning into steps, which often leads to more accurate answers for complex problems."
+                },
+                {
+                    module: 2,
+                    question: "What does 'role-playing' prompting involve?",
+                    options: [
+                        "Asking the model to assume a specific persona or role",
+                        "Creating prompts for game characters",
+                        "Simulating conversations between multiple roles",
+                        "Training the model to play specific roles"
+                    ],
+                    correct: 0,
+                    explanation: "Role-playing prompting involves asking the model to respond from the perspective of a specific character, expert, or persona to get more contextual responses."
+                },
+                {
+                    module: 2,
+                    question: "Which technique is useful for creative writing tasks?",
+                    options: [
+                        "Providing stylistic guidance in the prompt",
+                        "Using the lowest temperature setting",
+                        "Asking for bullet-point responses only",
+                        "Avoiding any context or examples"
+                    ],
+                    correct: 0,
+                    explanation: "For creative writing, providing stylistic guidance (e.g., 'in the style of Hemingway') helps the model generate content that matches the desired tone and style."
+                },
+                {
+                    module: 2,
+                    question: "What is 'self-consistency' in prompt engineering?",
+                    options: [
+                        "Generating multiple responses and selecting the most consistent one",
+                        "Ensuring the model never changes its answers",
+                        "Making sure all prompts follow the same template",
+                        "Using the same prompt for every request"
+                    ],
+                    correct: 0,
+                    explanation: "Self-consistency involves generating multiple responses to the same prompt and selecting the most consistent or frequent answer, improving reliability."
+                },
+                {
+                    module: 2,
+                    question: "How can you reduce hallucinations in model responses?",
+                    options: [
+                        "Asking the model to cite sources or provide evidence",
+                        "Using higher temperature settings",
+                        "Making prompts more vague",
+                        "Requesting shorter responses"
+                    ],
+                    correct: 0,
+                    explanation: "Asking the model to cite sources or provide evidence for its statements can help reduce hallucinations and make responses more factual."
+                },
+                {
+                    module: 2,
+                    question: "What is 'prompt chaining'?",
+                    options: [
+                        "Breaking a complex task into multiple connected prompts",
+                        "Using the same prompt repeatedly",
+                        "Linking prompts to blockchain technology",
+                        "Creating a sequence of unrelated questions"
+                    ],
+                    correct: 0,
+                    explanation: "Prompt chaining involves breaking a complex task into smaller subtasks, each with its own prompt, and using the outputs to inform subsequent prompts."
+                },
+                {
+                    module: 2,
+                    question: "Which technique helps with factual accuracy?",
+                    options: [
+                        "Asking the model to verify information against known sources",
+                        "Using more creative language in prompts",
+                        "Increasing the temperature parameter",
+                        "Making prompts as short as possible"
+                    ],
+                    correct: 0,
+                    explanation: "Asking the model to verify information or cross-check with known sources can improve the factual accuracy of responses."
+                },
+                {
+                    module: 2,
+                    question: "What is the benefit of using 'priming' in prompts?",
+                    options: [
+                        "Setting context or expectations before the main request",
+                        "Making the prompt execute faster",
+                        "Reducing the token count of the prompt",
+                        "Ensuring the model remembers previous interactions"
+                    ],
+                    correct: 0,
+                    explanation: "Priming involves providing context or setting expectations at the beginning of a prompt to guide the model toward the desired type of response."
+                },
+                {
+                    module: 2,
+                    question: "How does 'response formatting' help in prompt engineering?",
+                    options: [
+                        "It makes the output easier to parse and use",
+                        "It reduces the computational requirements",
+                        "It makes the prompt more visually appealing",
+                        "It ensures the model responds faster"
+                    ],
+                    correct: 0,
+                    explanation: "Specifying the desired format (JSON, XML, bullet points, etc.) makes the output more structured and easier to integrate into other systems or processes."
+                },
+                {
+                    module: 2,
+                    question: "What is the purpose of 'constraint-based' prompting?",
+                    options: [
+                        "Limiting the response to certain parameters or rules",
+                        "Reducing the length of the response",
+                        "Making the model work with fewer resources",
+                        "Ensuring the prompt follows specific grammatical rules"
+                    ],
+                    correct: 0,
+                    explanation: "Constraint-based prompting involves setting specific rules or limitations for the response, such as word count, excluded topics, or required elements."
+
+                },
+
+                // Module 3: Application-Specific Prompting
+                {
+                    module: 3,
+                    question: "When creating prompts for code generation, what is important to include?",
+                    options: [
+                        "Specific programming language and requirements",
+                        "Poetic descriptions of the desired code",
+                        "As few details as possible to avoid confusion",
+                        "Only the function names without parameters"
+                    ],
+                    correct: 0,
+                    explanation: "For code generation, specifying the programming language, input/output requirements, and any constraints is crucial for getting usable code."
+                },
+                {
+                    module: 3,
+                    question: "What is a key consideration when prompting for content summarization?",
+                    options: [
+                        "Specifying the desired length and key points to include",
+                        "Using highly technical language",
+                        "Asking for the summary to be longer than the original",
+                        "Avoiding any guidance on structure"
+                    ],
+                    correct: 0,
+                    explanation: "For summarization tasks, specifying length constraints and important points to include helps ensure the summary meets your needs."
+                },
+                {
+                    module: 3,
+                    question: "How can prompts be optimized for translation tasks?",
+                    options: [
+                        "Specifying context and domain-specific terminology",
+                        "Using ambiguous source text",
+                        "Avoiding mention of the target language",
+                        "Requesting literal word-for-word translation only"
+                    ],
+                    correct: 0,
+                    explanation: "For translation, providing context and specifying any domain-specific terminology helps the model produce more accurate translations."
+                },
+                {
+                    module: 3,
+                    question: "What is important when creating prompts for question answering?",
+                    options: [
+                        "Providing relevant context and clear questions",
+                        "Using only yes/no questions",
+                        "Asking multiple unrelated questions at once",
+                        "Avoiding any background information"
+                    ],
+                    correct: 0,
+                    explanation: "For QA tasks, providing sufficient context and framing clear, specific questions helps the model provide accurate and relevant answers."
+                },
+                {
+                    module: 3,
+                    question: "Which approach is effective for creative writing prompts?",
+                    options: [
+                        "Providing character details, setting, and plot direction",
+                        "Using only one-word prompts",
+                        "Avoiding any creative constraints",
+                        "Requesting the shortest possible response"
+                    ],
+                    correct: 0,
+                    explanation: "For creative writing, providing details about characters, setting, and plot direction helps guide the model toward the desired creative output."
+                },
+                {
+                    module: 3,
+                    question: "What is a key element for data extraction prompts?",
+                    options: [
+                        "Specifying the exact format for extracted information",
+                        "Using vague descriptions of the desired data",
+                        "Asking for all possible data points without filtering",
+                        "Avoiding examples of the desired output"
+                    ],
+                    correct: 0,
+                    explanation: "For data extraction, specifying the exact format (JSON, CSV, etc.) and which fields to extract ensures structured, usable output."
+                },
+                {
+                    module: 3,
+                    question: "How can prompts be designed for sentiment analysis?",
+                    options: [
+                        "Asking the model to classify text with specific categories",
+                        "Using ambiguous classification terms",
+                        "Avoiding examples of different sentiments",
+                        "Requesting lengthy explanations for each analysis"
+                    ],
+                    correct: 0,
+                    explanation: "For sentiment analysis, providing clear categories (positive, negative, neutral) and examples improves classification accuracy."
+                },
+                {
+                    module: 3,
+                    question: "What is important for prompts aimed at text classification?",
+                    options: [
+                        "Clearly defining categories and providing examples",
+                        "Using overlapping or ambiguous categories",
+                        "Avoiding any category definitions",
+                        "Requesting classification without explanation"
+                    ],
+                    correct: 0,
+                    explanation: "For text classification, clearly defined categories and example inputs for each category help the model learn to classify accurately."
+                },
+                {
+                    module: 3,
+                    question: "Which technique helps with dialogue generation?",
+                    options: [
+                        "Establishing character personas and conversation context",
+                        "Using only one speaker in the prompt",
+                        "Avoiding any dialogue history",
+                        "Requesting monologues instead of dialogues"
+                    ],
+                    correct: 0,
+                    explanation: "For dialogue generation, establishing character personas and providing conversation context helps create more natural and consistent dialogues."
+                },
+                {
+                    module: 3,
+                    question: "What is crucial for prompts designed for instructional content?",
+                    options: [
+                        "Clear sequencing and step-by-step guidance",
+                        "Using abstract concepts without examples",
+                        "Mixing multiple instruction types in one prompt",
+                        "Avoiding any structure or sequence"
+                    ],
+                    correct: 0,
+                    explanation: "For instructional content, clear sequencing and step-by-step guidance in the prompt helps the model generate logical, easy-to-follow instructions."
+                },
+
+                // Module 4: Ethical Considerations and Bias
+                {
+                    module: 4,
+                    question: "Why is it important to consider bias in prompt engineering?",
+                    options: [
+                        "To avoid reinforcing harmful stereotypes in AI responses",
+                        "To make prompts more politically correct",
+                        "To increase the complexity of prompts",
+                        "To ensure all responses are exactly the same"
+                    ],
+                    correct: 0,
+                    explanation: "Considering bias helps prevent AI systems from perpetuating harmful stereotypes or providing unfair, discriminatory responses."
+                },
+                {
+                    module: 4,
+                    question: "What is 'red teaming' in the context of prompt engineering?",
+                    options: [
+                        "Testing prompts for potential harmful outputs",
+                        "Using red-colored text in prompts",
+                        "Creating teams to compete in prompt engineering",
+                        "Developing prompts specifically for security applications"
+                    ],
+                    correct: 0,
+                    explanation: "Red teaming involves deliberately testing prompts to uncover potential harmful, biased, or otherwise undesirable outputs from AI models."
+                },
+                {
+                    module: 4,
+                    question: "How can prompt engineers mitigate bias in AI responses?",
+                    options: [
+                        "Using inclusive language and diverse examples",
+                        "Avoiding any mention of demographic characteristics",
+                        "Always using the same examples regardless of context",
+                        "Requesting that the model ignore bias concerns"
+                    ],
+                    correct: 0,
+                    explanation: "Using inclusive language and diverse examples in prompts can help reduce bias in AI responses by exposing the model to more balanced perspectives."
+                },
+                {
+                    module: 4,
+                    question: "What is a key ethical consideration when designing prompts?",
+                    options: [
+                        "Ensuring prompts don't encourage harmful or illegal activities",
+                        "Making prompts as complex as possible",
+                        "Always getting the highest accuracy regardless of content",
+                        "Using the fewest tokens possible for every prompt"
+                    ],
+                    correct: 0,
+                    explanation: "Ethical prompt design involves ensuring that prompts don't encourage the AI to generate harmful, dangerous, or illegal content."
+                },
+                {
+                    module: 4,
+                    question: "Why should prompt engineers consider privacy implications?",
+                    options: [
+                        "To prevent the model from generating sensitive personal information",
+                        "To make prompts more secure from hacking attempts",
+                        "To reduce the computational load on AI systems",
+                        "To ensure prompts are shorter and more efficient"
+                    ],
+                    correct: 0,
+                    explanation: "Considering privacy helps prevent the accidental generation or disclosure of sensitive personal information in AI responses."
+                },
+                {
+                    module: 4,
+                    question: "What is 'value alignment' in prompt engineering?",
+                    options: [
+                        "Ensuring AI responses align with human values and ethics",
+                        "Making all responses have the same values",
+                        "Aligning prompt values with computational efficiency",
+                        "Ensuring the monetary value of outputs is high"
+                    ],
+                    correct: 0,
+                    explanation: "Value alignment involves designing prompts that encourage AI systems to produce outputs consistent with human values and ethical principles."
+                },
+                {
+                    module: 4,
+                    question: "How can transparency be maintained in prompt engineering?",
+                    options: [
+                        "Documenting prompt design choices and limitations",
+                        "Making all prompts publicly available",
+                        "Using only transparent background colors in interfaces",
+                        "Ensuring the AI explains its prompt processing steps"
+                    ],
+                    correct: 0,
+                    explanation: "Maintaining transparency involves documenting why certain prompt designs were chosen and being clear about the limitations of AI systems."
+                },
+                {
+                    module: 4,
+                    question: "What should prompt engineers do when they discover biased outputs?",
+                    options: [
+                        "Iteratively refine prompts to reduce the bias",
+                        "Ignore the bias if it's not too severe",
+                        "Use the same prompts but with different models",
+                        "Ask the model to avoid mentioning certain topics"
+                    ],
+                    correct: 0,
+                    explanation: "When bias is discovered, prompt engineers should refine their prompts through iteration to reduce or eliminate the biased outputs."
+                },
+                {
+                    module: 4,
+                    question: "Why is it important to consider cultural context in prompts?",
+                    options: [
+                        "To ensure appropriateness across different cultures",
+                        "To make prompts more interesting and diverse",
+                        "To increase the linguistic complexity of prompts",
+                        "To ensure the model learns about all cultures equally"
+                    ],
+                    correct: 0,
+                    explanation: "Considering cultural context helps ensure that prompts and resulting AI responses are appropriate and respectful across different cultural backgrounds."
+                },
+                {
+                    module: 4,
+                    question: "What is the responsibility of prompt engineers regarding AI misuse?",
+                    options: [
+                        "Designing prompts that discourage malicious use",
+                        "Creating prompts that work only for positive applications",
+                        "Ensuring prompts cannot be used by bad actors",
+                        "Limiting prompt access to certified engineers only"
+                    ],
+                    correct: 0,
+                    explanation: "Prompt engineers have a responsibility to design prompts that discourage malicious use of AI systems and to consider potential misapplications."
+
+                },
+
+                // Module 5: Advanced Applications and Future Trends
+                {
+                    module: 5,
+                    question: "What is 'multi-modal' prompt engineering?",
+                    options: [
+                        "Creating prompts that combine text with other media types",
+                        "Using multiple prompt patterns simultaneously",
+                        "Engineering prompts for multiple AI models at once",
+                        "Creating prompts in multiple languages"
+                    ],
+                    correct: 0,
+                    explanation: "Multi-modal prompt engineering involves creating prompts that combine text with images, audio, or other media types for AI systems that can process multiple input modalities."
+                },
+                {
+                    module: 5,
+                    question: "How might prompt engineering evolve with more advanced AI?",
+                    options: [
+                        "Focus shifting from explicit instructions to high-level guidance",
+                        "Becoming unnecessary as AI improves",
+                        "Involving only single-word prompts",
+                        "Focusing solely on speed optimization"
+                    ],
+                    correct: 0,
+                    explanation: "As AI systems become more advanced, prompt engineering may shift from providing explicit instructions to offering high-level guidance, with AI filling in details."
+                },
+                {
+                    module: 5,
+                    question: "What is 'conversational context management' in prompt engineering?",
+                    options: [
+                        "Maintaining context across multiple exchanges in a conversation",
+                        "Managing how conversations are stored in databases",
+                        "Engineering prompts for conference calling systems",
+                        "Creating context-free conversational prompts"
+                    ],
+                    correct: 0,
+                    explanation: "Conversational context management involves designing prompts that effectively maintain and reference context across multiple turns in a conversation with AI."
+                },
+                {
+                    module: 5,
+                    question: "How can prompt engineering be used for personalization?",
+                    options: [
+                        "Incorporating user preferences and history into prompts",
+                        "Creating different prompts for each user individually",
+                        "Asking the model to personalize its own prompts",
+                        "Using the same prompts but changing the user name"
+                    ],
+                    correct: 0,
+                    explanation: "Personalization in prompt engineering involves incorporating user preferences, history, and characteristics into prompts to create tailored AI responses."
+                },
+                {
+                    module: 5,
+                    question: "What role might prompt engineering play in AI safety?",
+                    options: [
+                        "Creating safeguards through carefully designed prompts",
+                        "Eliminating the need for other safety measures",
+                        "Making AI systems completely safe through prompts alone",
+                        "Reducing the computational power needed for safety"
+                    ],
+                    correct: 0,
+                    explanation: "Prompt engineering can contribute to AI safety by creating safeguards and constraints through carefully designed prompts that guide AI toward safer outputs."
+                },
+                {
+                    module: 5,
+                    question: "How is prompt engineering related to transfer learning?",
+                    options: [
+                        "Prompts can help adapt general models to specific tasks",
+                        "It involves transferring prompts between different models",
+                        "It focuses on learning how to transfer prompts efficiently",
+                        "It makes transfer learning unnecessary"
+                    ],
+                    correct: 0,
+                    explanation: "Prompt engineering facilitates transfer learning by helping adapt general-purpose AI models to specific tasks through carefully crafted prompts."
+                },
+                {
+                    module: 5,
+                    question: "What is an emerging trend in prompt engineering?",
+                    options: [
+                        "Automated prompt optimization and generation",
+                        "Eliminating all human involvement in prompt creation",
+                        "Creating extremely long and detailed prompts",
+                        "Focusing only on single-token prompts"
+                    ],
+                    correct: 0,
+                    explanation: "An emerging trend is the development of AI systems that can automatically optimize and generate effective prompts, reducing the manual effort required."
+                },
+                {
+                    module: 5,
+                    question: "How might prompt engineering address domain specificity?",
+                    options: [
+                        "Incorporating domain-specific knowledge and terminology",
+                        "Creating completely generic prompts for all domains",
+                        "Avoiding any domain-specific references",
+                        "Training separate models for each domain instead"
+                    ],
+                    correct: 0,
+                    explanation: "Prompt engineering addresses domain specificity by incorporating relevant domain knowledge, terminology, and constraints into prompts."
+                },
+                {
+                    module: 5,
+                    question: "What is 'meta-prompting'?",
+                    options: [
+                        "Creating prompts that ask the model to generate other prompts",
+                        "Prompting about metaphysical concepts",
+                        "Using prompts that are about prompting itself",
+                        "Creating prompts for metadata generation"
+                    ],
+                    correct: 0,
+                    explanation: "Meta-prompting involves creating prompts that ask AI models to generate or optimize other prompts, creating a form of prompt recursion."
+                },
+                {
+                    module: 5,
+                    question: "How can prompt engineering contribute to AI explainability?",
+                    options: [
+                        "Asking models to explain their reasoning processes",
+                        "Making prompts that are completely self-explanatory",
+                        "Eliminating the need for AI explanations",
+                        "Creating simplified prompts that avoid complex topics"
+                    ],
+                    correct: 0,
+                    explanation: "Prompt engineering can improve AI explainability by specifically asking models to articulate their reasoning, sources, or confidence levels."
                 }
             ];
 
             let currentQuestion = 0;
             let userAnswers = new Array(questions.length).fill(null);
             let quizSubmitted = false;
+            let currentModule = 1;
 
             const quizContainer = document.getElementById('quiz-container');
             const prevBtn = document.getElementById('prev-btn');
@@ -337,19 +889,50 @@
             const resultMessage = document.getElementById('result-message');
             const currentSpan = document.getElementById('current');
             const totalSpan = document.getElementById('total');
+            const moduleTitle = document.getElementById('module-title');
+            const moduleButtons = document.querySelectorAll('.module-btn');
 
             totalSpan.textContent = questions.length;
 
+            // Filter questions by module
+            function getQuestionsByModule(module) {
+                return questions.filter(q => q.module === module);
+            }
+
+            // Get current module questions
+            function getCurrentModuleQuestions() {
+                return getQuestionsByModule(currentModule);
+            }
+
+            // Get global index from module index
+            function getGlobalIndex(moduleIndex) {
+                const moduleQuestions = getQuestionsByModule(currentModule);
+                if (moduleIndex >= 0 && moduleIndex < moduleQuestions.length) {
+                    return questions.indexOf(moduleQuestions[moduleIndex]);
+                }
+                return 0;
+            }
+
+            // Get module index from global index
+            function getModuleIndex(globalIndex) {
+                const moduleQuestions = getQuestionsByModule(currentModule);
+                return moduleQuestions.indexOf(questions[globalIndex]);
+            }
+
             function showQuestion() {
-                currentSpan.textContent = currentQuestion + 1;
+                const moduleQuestions = getCurrentModuleQuestions();
+                const moduleIndex = getModuleIndex(currentQuestion);
+                const currentQ = moduleQuestions[moduleIndex];
                 
-                if (currentQuestion === 0) {
+                currentSpan.textContent = moduleIndex + 1;
+                
+                if (moduleIndex === 0) {
                     prevBtn.style.display = 'none';
                 } else {
                     prevBtn.style.display = 'block';
                 }
 
-                if (currentQuestion === questions.length - 1) {
+                if (moduleIndex === moduleQuestions.length - 1) {
                     nextBtn.style.display = 'none';
                     submitBtn.style.display = 'block';
                 } else {
@@ -357,18 +940,17 @@
                     submitBtn.style.display = 'none';
                 }
 
-                const question = questions[currentQuestion];
                 let optionsHtml = '';
                 
-                question.options.forEach((option, index) => {
+                currentQ.options.forEach((option, index) => {
                     let optionClass = 'option';
                     if (userAnswers[currentQuestion] === index) {
                         optionClass += ' selected';
                     }
                     if (quizSubmitted) {
-                        if (index === question.correct) {
+                        if (index === currentQ.correct) {
                             optionClass += ' correct';
-                        } else if (userAnswers[currentQuestion] === index && index !== question.correct) {
+                        } else if (userAnswers[currentQuestion] === index && index !== currentQ.correct) {
                             optionClass += ' incorrect';
                         }
                     }
@@ -382,12 +964,12 @@
 
                 let explanationHtml = '';
                 if (quizSubmitted) {
-                    explanationHtml = `<div class="explanation" style="display: block;">${question.explanation}</div>`;
+                    explanationHtml = `<div class="explanation" style="display: block;">${currentQ.explanation}</div>`;
                 }
 
                 quizContainer.innerHTML = `
                     <div class="question">
-                        <div class="question-text">${currentQuestion + 1}. ${question.question}</div>
+                        <div class="question-text">${moduleIndex + 1}. ${currentQ.question}</div>
                         <div class="options">${optionsHtml}</div>
                         ${explanationHtml}
                     </div>
@@ -412,15 +994,23 @@
             }
 
             function showNextQuestion() {
-                if (currentQuestion < questions.length - 1) {
-                    currentQuestion++;
+                const moduleQuestions = getCurrentModuleQuestions();
+                const moduleIndex = getModuleIndex(currentQuestion);
+                
+                if (moduleIndex < moduleQuestions.length - 1) {
+                    const nextModuleIndex = moduleIndex + 1;
+                    currentQuestion = questions.indexOf(moduleQuestions[nextModuleIndex]);
                     showQuestion();
                 }
             }
 
             function showPrevQuestion() {
-                if (currentQuestion > 0) {
-                    currentQuestion--;
+                const moduleQuestions = getCurrentModuleQuestions();
+                const moduleIndex = getModuleIndex(currentQuestion);
+                
+                if (moduleIndex > 0) {
+                    const prevModuleIndex = moduleIndex - 1;
+                    currentQuestion = questions.indexOf(moduleQuestions[prevModuleIndex]);
                     showQuestion();
                 }
             }
@@ -439,13 +1029,15 @@
                 
                 let message = '';
                 if (score === questions.length) {
-                    message = 'Perfect! You have a solid understanding of Node.js basics.';
-                } else if (score >= questions.length * 0.7) {
-                    message = 'Well done! You have a good grasp of Node.js fundamentals.';
+                    message = 'Perfect! You are a prompt engineering expert!';
+                } else if (score >= questions.length * 0.8) {
+                    message = 'Excellent! You have a strong understanding of prompt engineering.';
+                } else if (score >= questions.length * 0.6) {
+                    message = 'Good job! You have a solid foundation in prompt engineering.';
                 } else if (score >= questions.length * 0.5) {
-                    message = 'Good effort! Review the explanations and try again.';
+                    message = 'You passed! Review the explanations to improve your knowledge.';
                 } else {
-                    message = 'Keep learning! Review Node.js basics and try again.';
+                    message = 'Keep learning! Review the prompt engineering concepts and try again.';
                 }
                 
                 resultMessage.textContent = message;
@@ -464,11 +1056,48 @@
                 showQuestion();
             }
 
+            function setActiveModule(module) {
+                currentModule = parseInt(module);
+                
+                // Update active button
+                moduleButtons.forEach(btn => {
+                    if (parseInt(btn.getAttribute('data-module')) === currentModule) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+                
+                // Update module title
+                const moduleTitles = [
+                    "Module 1: Fundamentals of Prompt Engineering",
+                    "Module 2: Advanced Prompting Techniques",
+                    "Module 3: Application-Specific Prompting",
+                    "Module 4: Ethical Considerations and Bias",
+                    "Module 5: Advanced Applications and Future Trends"
+                ];
+                moduleTitle.textContent = moduleTitles[currentModule - 1];
+                
+                // Reset to first question of the module
+                const moduleQuestions = getQuestionsByModule(currentModule);
+                currentQuestion = questions.indexOf(moduleQuestions[0]);
+                showQuestion();
+            }
+
+            // Event listeners
             prevBtn.addEventListener('click', showPrevQuestion);
             nextBtn.addEventListener('click', showNextQuestion);
             submitBtn.addEventListener('click', submitQuiz);
             restartBtn.addEventListener('click', restartQuiz);
 
+            // Module buttons event listeners
+            moduleButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    setActiveModule(this.getAttribute('data-module'));
+                });
+            });
+
+            // Initialize
             showQuestion();
         });
     </script>
