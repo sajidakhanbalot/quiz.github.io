@@ -1,160 +1,1083 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>100 Questions Quiz</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f4f7fb;
-      margin: 0;
-      padding: 0;
-    }
-    .container {
-      max-width: 800px;
-      margin: 40px auto;
-      background: #fff;
-      border-radius: 12px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-      padding: 20px;
-    }
-    h1 {
-      text-align: center;
-      color: #333;
-    }
-    .progress {
-      background: #e0e0e0;
-      border-radius: 8px;
-      overflow: hidden;
-      height: 20px;
-      margin: 20px 0;
-    }
-    .progress-bar {
-      height: 100%;
-      width: 0%;
-      color: #fff;
-      text-align: center;
-      font-size: 12px;
-      line-height: 20px;
-      transition: width 0.3s ease, background 0.3s ease;
-      background: #4a90e2;
-    }
-    .question {
-      margin: 20px 0;
-      font-weight: bold;
-      color: #222;
-    }
-    .options label {
-      display: block;
-      background: #f1f1f1;
-      margin: 8px 0;
-      padding: 10px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    .options label:hover {
-      background: #e1e7ff;
-    }
-    button {
-      display: block;
-      margin: 20px auto;
-      padding: 10px 20px;
-      border: none;
-      background: #4a90e2;
-      color: #fff;
-      font-size: 16px;
-      border-radius: 8px;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    button:hover {
-      background: #357ab8;
-    }
-    .result {
-      text-align: center;
-      font-size: 20px;
-      font-weight: bold;
-      margin-top: 20px;
-      color: green;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt Engineering Quiz</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6e8efb, #a777e3);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 1000px;
+            padding: 30px;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2.2rem;
+        }
+        
+        .description {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+        
+        .modules {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 25px;
+            justify-content: center;
+        }
+        
+        .module-btn {
+            padding: 10px 15px;
+            background-color: #f0f4ff;
+            border: 2px solid #a777e3;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-weight: 600;
+            color: #6e8efb;
+        }
+        
+        .module-btn:hover {
+            background-color: #e0e7ff;
+            transform: translateY(-2px);
+        }
+        
+        .module-btn.active {
+            background-color: #6e8efb;
+            color: white;
+            border-color: #6e8efb;
+        }
+        
+        .question {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            color: #333;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .option {
+            padding: 12px 15px;
+            background-color: #f5f7fb;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .option:hover {
+            background-color: #e9effd;
+            transform: translateY(-2px);
+        }
+        
+        .option.selected {
+            background-color: #d1e0ff;
+            border-color: #3d7bea;
+        }
+        
+        .option.correct {
+            background-color: #d4edda;
+            border-color: #28a745;
+        }
+        
+        .option.incorrect {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        #prev-btn {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        #prev-btn:hover {
+            background-color: #5a6268;
+        }
+        
+        #next-btn {
+            background-color: #6e8efb;
+            color: white;
+        }
+        
+        #next-btn:hover {
+            background-color: #5d7ce0;
+        }
+        
+        #submit-btn {
+            background-color: #28a745;
+            color: white;
+            display: none;
+        }
+        
+        #submit-btn:hover {
+            background-color: #218838;
+        }
+        
+        .result {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+        
+        .score {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .message {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #555;
+        }
+        
+        #restart-btn {
+            background-color: #ffc107;
+            color: #333;
+        }
+        
+        #restart-btn:hover {
+            background-color: #e0a800;
+        }
+        
+        .progress {
+            text-align: right;
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .explanation {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            display: none;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #444;
+        }
+        
+        .module-title {
+            text-align: center;
+            color: #6e8efb;
+            margin-bottom: 20px;
+            font-size: 1.4rem;
+            font-weight: 600;
+        }
+        
+        .programming-task {
+            background-color: #f8f9fa;
+            border-left: 4px solid #6e8efb;
+            padding: 15px;
+            margin: 20px 0;
+            border-radius: 4px;
+        }
+        
+        .code-editor {
+            background-color: #2d2d2d;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', monospace;
+            margin: 15px 0;
+            overflow-x: auto;
+        }
+        
+        .question-counter {
+            text-align: center;
+            margin-bottom: 15px;
+            font-weight: 600;
+            color: #6e8efb;
+        }
+    </style>
 </head>
 <body>
-  <div class="container">
-    <h1>💡 Ultimate 100 Questions Quiz</h1>
-    <div class="progress">
-      <div class="progress-bar" id="progress-bar">0%</div>
-    </div>
-    <div id="quiz"></div>
-    <button onclick="nextQuestion()">Next</button>
-    <div class="result" id="result"></div>
-  </div>
-
-  <script>
-    const quizData = [
-      // (100 questions from previous version go here — unchanged)
-    ];
-
-    let currentQuestion = 0;
-    let score = 0;
-
-    function loadQuestion() {
-      if (currentQuestion >= quizData.length) {
-        document.getElementById('quiz').innerHTML = '';
-        document.getElementById('result').innerText = `🎉 You scored ${score} / ${quizData.length}`;
-        document.querySelector('button').style.display = 'none';
-        document.getElementById('progress-bar').style.width = '100%';
-        document.getElementById('progress-bar').innerText = '100%';
-        document.getElementById('progress-bar').style.background = 'green';
-        return;
-      }
-
-      const qData = quizData[currentQuestion];
-      const quizDiv = document.getElementById('quiz');
-      quizDiv.innerHTML = `
-        <div class="question">${currentQuestion+1}. ${qData.q}</div>
-        <div class="options">
-          ${qData.options.map((opt,i)=>`
-            <label><input type=\"radio\" name=\"option\" value=\"${i}\"> ${opt}</label>
-          `).join('')}
+    <div class="container">
+        <h1>Prompt Engineering Quiz</h1>
+        <p class="description">Test your knowledge of prompt engineering with this comprehensive quiz covering multiple modules.</p>
+        
+        <div class="modules">
+            <button class="module-btn active" data-module="1">Module 1</button>
+            <button class="module-btn" data-module="2">Module 2</button>
+            <button class="module-btn" data-module="3">HTML Questions</button>
+            <button class="module-btn" data-module="4">Programming Tasks</button>
         </div>
-      `;
+        
+        <div class="module-title" id="module-title">Module 1: Fundamentals of Prompt Engineering</div>
+        
+        <div class="question-counter">Question <span id="current">1</span> of <span id="total">10</span></div>
+        
+        <div id="quiz-container">
+            <!-- Questions will be inserted here by JavaScript -->
+        </div>
+        
+        <div class="controls">
+            <button id="prev-btn">Previous</button>
+            <button id="next-btn">Next</button>
+            <button id="submit-btn">Submit Quiz</button>
+        </div>
+        
+        <div id="result" class="result">
+            <h2>Quiz Completed!</h2>
+            <div class="score">Your score: <span id="score-value">0</span>/100</div>
+            <p class="message" id="result-message"></p>
+            <button id="restart-btn">Restart Quiz</button>
+        </div>
+    </div>
 
-      updateProgress();
-    }
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Questions organized by modules
+            const modules = {
+                1: [
+                    {
+                        question: "What is prompt engineering?",
+                        options: [
+                            "The process of designing and refining inputs to get desired outputs from AI models",
+                            "A method for programming faster code",
+                            "The engineering of quick response systems",
+                            "A technique for database optimization"
+                        ],
+                        correct: 0,
+                        explanation: "Prompt engineering is the practice of designing and refining inputs (prompts) to elicit specific, desired outputs from AI models, particularly large language models."
+                    },
+                    {
+                        question: "Which of these is NOT a key component of a good prompt?",
+                        options: [
+                            "Clear instructions",
+                            "Ambiguous language",
+                            "Specific context",
+                            "Desired output format"
+                        ],
+                        correct: 1,
+                        explanation: "Ambiguous language should be avoided in prompts as it can lead to unpredictable or undesired outputs from the AI model."
+                    },
+                    {
+                        question: "What does 'zero-shot' prompting mean?",
+                        options: [
+                            "Asking the model to perform a task without any examples",
+                            "Prompting with zero context",
+                            "A prompt that gets zero responses",
+                            "Asking for no shots in the response"
+                        ],
+                        correct: 0,
+                        explanation: "Zero-shot prompting involves asking the model to perform a task without providing any examples, relying solely on its pre-trained knowledge."
+                    },
+                    {
+                        question: "What is the primary goal of iterative prompt refinement?",
+                        options: [
+                            "To gradually improve the quality of AI responses",
+                            "To make prompts shorter each time",
+                            "To reduce the number of API calls",
+                            "To eliminate all errors from the model"
+                        ],
+                        correct: 0,
+                        explanation: "Iterative prompt refinement involves gradually improving prompts through testing and adjustment to get better, more accurate responses from the AI model."
+                    },
+                    {
+                        question: "Which technique involves providing examples in the prompt?",
+                        options: [
+                            "Few-shot prompting",
+                            "Zero-shot prompting",
+                            "Chain-of-thought prompting",
+                            "Role-playing prompting"
+                        ],
+                        correct: 0,
+                        explanation: "Few-shot prompting involves providing examples in the prompt to guide the model toward the desired type of response."
+                    },
+                    {
+                        question: "What is 'temperature' in the context of AI models?",
+                        options: [
+                            "A parameter that controls the randomness of outputs",
+                            "The speed at which the model processes requests",
+                            "A measure of how hot the server gets",
+                            "The accuracy of the model's responses"
+                        ],
+                        correct: 0,
+                        explanation: "Temperature is a parameter that controls the randomness of the model's outputs. Higher values make outputs more random, while lower values make them more deterministic."
+                    },
+                    {
+                        question: "Why is specificity important in prompt engineering?",
+                        options: [
+                            "It helps the model understand exactly what is being asked",
+                            "It makes prompts longer and more detailed",
+                            "It increases the computational cost",
+                            "It ensures the model responds faster"
+                        ],
+                        correct: 0,
+                        explanation: "Specificity helps eliminate ambiguity and guides the model toward the exact type of response desired, improving the relevance and accuracy of outputs."
+                    },
+                    {
+                        question: "What does 'token' refer to in language models?",
+                        options: [
+                            "A unit of text that the model processes",
+                            "A security key for API access",
+                            "A type of prompt template",
+                            "A measure of response quality"
+                        ],
+                        correct: 0,
+                        explanation: "In language models, a token is a unit of text, which can be as short as one character or as long as one word, that the model processes."
+                    },
+                    {
+                        question: "Which of these is a common prompt engineering mistake?",
+                        options: [
+                            "Being too vague or ambiguous",
+                            "Using complete sentences",
+                            "Providing clear context",
+                            "Specifying the desired format"
+                        ],
+                        correct: 0,
+                        explanation: "Being too vague or ambiguous is a common mistake that can lead to irrelevant or inaccurate responses from the AI model."
+                    },
+                    {
+                        question: "What is the purpose of using delimiters in prompts?",
+                        options: [
+                            "To clearly separate different parts of the prompt",
+                            "To make the prompt look more professional",
+                            "To reduce the token count",
+                            "To encrypt the prompt content"
+                        ],
+                        correct: 0,
+                        explanation: "Delimiters like quotation marks, XML tags, or section headings help separate different parts of the prompt, making it easier for the model to understand the structure."
+                    }
+                ],
+                2: [
+                    {
+                        question: "What is 'chain-of-thought' prompting?",
+                        options: [
+                            "Asking the model to explain its reasoning step by step",
+                            "Linking multiple prompts together",
+                            "A method for connecting different AI models",
+                            "Creating a sequence of related questions"
+                        ],
+                        correct: 0,
+                        explanation: "Chain-of-thought prompting encourages the model to break down its reasoning into steps, which often leads to more accurate answers for complex problems."
+                    },
+                    {
+                        question: "What does 'role-playing' prompting involve?",
+                        options: [
+                            "Asking the model to assume a specific persona or role",
+                            "Creating prompts for game characters",
+                            "Simulating conversations between multiple roles",
+                            "Training the model to play specific roles"
+                        ],
+                        correct: 0,
+                        explanation: "Role-playing prompting involves asking the model to respond from the perspective of a specific character, expert, or persona to get more contextual responses."
+                    },
+                    {
+                        question: "Which technique is useful for creative writing tasks?",
+                        options: [
+                            "Providing stylistic guidance in the prompt",
+                            "Using the lowest temperature setting",
+                            "Asking for bullet-point responses only",
+                            "Avoiding any context or examples"
+                        ],
+                        correct: 0,
+                        explanation: "For creative writing, providing stylistic guidance (e.g., 'in the style of Hemingway') helps the model generate content that matches the desired tone and style."
+                    },
+                    {
+                        question: "What is 'self-consistency' in prompt engineering?",
+                        options: [
+                            "Generating multiple responses and selecting the most consistent one",
+                            "Ensuring the model never changes its answers",
+                            "Making sure all prompts follow the same template",
+                            "Using the same prompt for every request"
+                        ],
+                        correct: 0,
+                        explanation: "Self-consistency involves generating multiple responses to the same prompt and selecting the most consistent or frequent answer, improving reliability."
+                    },
+                    {
+                        question: "How can you reduce hallucinations in model responses?",
+                        options: [
+                            "Asking the model to cite sources or provide evidence",
+                            "Using higher temperature settings",
+                            "Making prompts more vague",
+                            "Requesting shorter responses"
+                        ],
+                        correct: 0,
+                        explanation: "Asking the model to cite sources or provide evidence for its statements can help reduce hallucinations and make responses more factual."
+                    },
+                    {
+                        question: "What is 'prompt chaining'?",
+                        options: [
+                            "Breaking a complex task into multiple connected prompts",
+                            "Using the same prompt repeatedly",
+                            "Linking prompts to blockchain technology",
+                            "Creating a sequence of unrelated questions"
+                        ],
+                        correct: 0,
+                        explanation: "Prompt chaining involves breaking a complex task into smaller subtasks, each with its own prompt, and using the outputs to inform subsequent prompts."
+                    },
+                    {
+                        question: "Which technique helps with factual accuracy?",
+                        options: [
+                            "Asking the model to verify information against known sources",
+                            "Using more creative language in prompts",
+                            "Increasing the temperature parameter",
+                            "Making prompts as short as possible"
+                        ],
+                        correct: 0,
+                        explanation: "Asking the model to verify information or cross-check with known sources can improve the factual accuracy of responses."
+                    },
+                    {
+                        question: "What is the benefit of using 'priming' in prompts?",
+                        options: [
+                            "Setting context or expectations before the main request",
+                            "Making the prompt execute faster",
+                            "Reducing the token count of the prompt",
+                            "Ensuring the model remembers previous interactions"
+                        ],
+                        correct: 0,
+                        explanation: "Priming involves providing context or setting expectations at the beginning of a prompt to guide the model toward the desired type of response."
+                    },
+                    {
+                        question: "How does 'response formatting' help in prompt engineering?",
+                        options: [
+                            "It makes the output easier to parse and use",
+                            "It reduces the computational requirements",
+                            "It makes the prompt more visually appealing",
+                            "It ensures the model responds faster"
+                        ],
+                        correct: 0,
+                        explanation: "Specifying the desired format (JSON, XML, bullet points, etc.) makes the output more structured and easier to integrate into other systems or processes."
+                    },
+                    {
+                        question: "What is the purpose of 'constraint-based' prompting?",
+                        options: [
+                            "Limiting the response to certain parameters or rules",
+                            "Reducing the length of the response",
+                            "Making the model work with fewer resources",
+                            "Ensuring the prompt follows specific grammatical rules"
+                        ],
+                        correct: 0,
+                        explanation: "Constraint-based prompting involves setting specific rules or limitations for the response, such as word count, excluded topics, or required elements."
+                    }
+                ],
+                3: [
+                    {
+                        question: "What does HTML stand for?",
+                        options: [
+                            "HyperText Markup Language",
+                            "HighTech Modern Language",
+                            "HyperTransfer Markup Language",
+                            "HyperText Modern Layout"
+                        ],
+                        correct: 0,
+                        explanation: "HTML stands for HyperText Markup Language, which is the standard language for creating web pages."
+                    },
+                    {
+                        question: "Which HTML tag is used to create a hyperlink?",
+                        options: [
+                            "<a>",
+                            "<link>",
+                            "<href>",
+                            "<hyperlink>"
+                        ],
+                        correct: 0,
+                        explanation: "The <a> tag is used to create hyperlinks in HTML, with the 'href' attribute specifying the link destination."
+                    },
+                    {
+                        question: "Which HTML element is used for the largest heading?",
+                        options: [
+                            "<h1>",
+                            "<head>",
+                            "<heading>",
+                            "<h6>"
+                        ],
+                        correct: 0,
+                        explanation: "The <h1> element is used for the largest heading, with <h2> to <h6> representing progressively smaller headings."
+                    },
+                    {
+                        question: "Which attribute is used to define inline styles in HTML?",
+                        options: [
+                            "style",
+                            "styles",
+                            "css",
+                            "font"
+                        ],
+                        correct: 0,
+                        explanation: "The 'style' attribute is used to apply inline CSS styles directly to an HTML element."
+                    },
+                    {
+                        question: "Which HTML tag is used to define an unordered list?",
+                        options: [
+                            "<ul>",
+                            "<ol>",
+                            "<list>",
+                            "<li>"
+                        ],
+                        correct: 0,
+                        explanation: "The <ul> tag is used to define an unordered (bulleted) list, while <ol> defines an ordered (numbered) list."
+                    },
+                    {
+                        question: "Which HTML element is used to specify a footer for a document or section?",
+                        options: [
+                            "<footer>",
+                            "<bottom>",
+                            "<section>",
+                            "<div>"
+                        ],
+                        correct: 0,
+                        explanation: "The <footer> element is used to define a footer for a document or section, typically containing authorship, copyright, or contact information."
+                    },
+                    {
+                        question: "Which HTML element is used to display a scalar measurement within a range?",
+                        options: [
+                            "<meter>",
+                            "<gauge>",
+                            "<range>",
+                            "<measure>"
+                        ],
+                        correct: 0,
+                        explanation: "The <meter> element represents a scalar measurement within a known range, or a fractional value."
+                    },
+                    {
+                        question: "Which HTML5 element is used to specify independent, self-contained content?",
+                        options: [
+                            "<article>",
+                            "<independent>",
+                            "<content>",
+                            "<section>"
+                        ],
+                        correct: 0,
+                        explanation: "The <article> element specifies independent, self-contained content that could be distributed independently from the rest of the site."
+                    },
+                    {
+                        question: "Which HTML element is used to draw graphics on the fly via JavaScript?",
+                        options: [
+                            "<canvas>",
+                            "<graphics>",
+                            "<draw>",
+                            "<svg>"
+                        ],
+                        correct: 0,
+                        explanation: "The <canvas> element is used to draw graphics via JavaScript, while <svg> is for vector graphics defined in XML."
+                    },
+                    {
+                        question: "Which HTML attribute is used to make an input field required?",
+                        options: [
+                            "required",
+                            "validate",
+                            "mandatory",
+                            "necessary"
+                        ],
+                        correct: 0,
+                        explanation: "The 'required' attribute is a boolean attribute that specifies that an input field must be filled out before submitting the form."
+                    },
+                    {
+                        question: "Which HTML element is used to define the title of a document?",
+                        options: [
+                            "<title>",
+                            "<head>",
+                            "<header>",
+                            "<document-title>"
+                        ],
+                        correct: 0,
+                        explanation: "The <title> element defines the title of the document, which is shown in the browser's title bar or tab."
+                    },
+                    {
+                        question: "Which HTML tag is used to define a table row?",
+                        options: [
+                            "<tr>",
+                            "<td>",
+                            "<th>",
+                            "<table-row>"
+                        ],
+                        correct: 0,
+                        explanation: "The <tr> tag defines a row in an HTML table, while <td> defines a standard cell and <th> defines a header cell."
+                    },
+                    {
+                        question: "Which HTML element is used to define important text?",
+                        options: [
+                            "<strong>",
+                            "<important>",
+                            "<b>",
+                            "<imp>"
+                        ],
+                        correct: 0,
+                        explanation: "The <strong> element is used to define text with strong importance, typically displayed in bold."
+                    },
+                    {
+                        question: "Which HTML element is used to define emphasized text?",
+                        options: [
+                            "<em>",
+                            "<emphasis>",
+                            "<i>",
+                            "<highlight>"
+                        ],
+                        correct: 0,
+                        explanation: "The <em> element is used to define emphasized text, typically displayed in italics."
+                    },
+                    {
+                        question: "Which HTML attribute specifies an alternate text for an image?",
+                        options: [
+                            "alt",
+                            "title",
+                            "src",
+                            "description"
+                        ],
+                        correct: 0,
+                        explanation: "The 'alt' attribute provides alternative information for an image if a user cannot view it."
+                    },
+                    {
+                        question: "Which HTML element is used to define a navigation menu?",
+                        options: [
+                            "<nav>",
+                            "<navigation>",
+                            "<menu>",
+                            "<navbar>"
+                        ],
+                        correct: 0,
+                        explanation: "The <nav> element defines a set of navigation links."
+                    },
+                    {
+                        question: "Which HTML element is used to define a section in a document?",
+                        options: [
+                            "<div>",
+                            "<section>",
+                            "<span>",
+                            "<area>"
+                        ],
+                        correct: 0,
+                        explanation: "The <div> element is a generic container for flow content, often used to group elements for styling purposes."
+                    },
+                    {
+                        question: "Which HTML tag is used to define a client-side script?",
+                        options: [
+                            "<script>",
+                            "<javascript>",
+                            "<js>",
+                            "<code>"
+                        ],
+                        correct: 0,
+                        explanation: "The <script> tag is used to define a client-side script, such as JavaScript."
+                    },
+                    {
+                        question: "Which HTML element is used to define a paragraph?",
+                        options: [
+                            "<p>",
+                            "<para>",
+                            "<paragraph>",
+                            "<text>"
+                        ],
+                        correct: 0,
+                        explanation: "The <p> element defines a paragraph of text."
+                    },
+                    {
+                        question: "Which HTML element is used to define a line break?",
+                        options: [
+                            "<br>",
+                            "<break>",
+                            "<lb>",
+                            "<newline>"
+                        ],
+                        correct: 0,
+                        explanation: "The <br> element inserts a single line break."
+                    }
+                ],
+                4: [
+                    {
+                        question: "Write a prompt that asks an AI to create a function that reverses a string.",
+                        options: [
+                            "Write a JavaScript function called reverseString that takes a string as input and returns the reversed version of that string.",
+                            "Create code to flip text backwards",
+                            "Make a program that changes string order",
+                            "How to reverse a string in programming?"
+                        ],
+                        correct: 0,
+                        explanation: "A good prompt should be specific about the programming language, function name, input, and expected output."
+                    },
+                    {
+                        question: "Create a prompt to generate HTML code for a simple login form with username and password fields.",
+                        options: [
+                            "Write HTML code for a login form with two input fields (username and password), labels for each, and a submit button. Style it with CSS to make it look modern.",
+                            "Make a login page",
+                            "HTML form for logging in",
+                            "Create user authentication form"
+                        ],
+                        correct: 0,
+                        explanation: "The best prompt specifies the exact elements needed and requests styling to improve the visual appearance."
+                    },
+                    {
+                        question: "Write a prompt to create a Python function that checks if a number is prime.",
+                        options: [
+                            "Write a Python function called is_prime that takes an integer as input and returns True if the number is prime, and False otherwise. Include error handling for numbers less than 2.",
+                            "Make a prime number checker",
+                            "Python code for prime numbers",
+                            "How to find prime numbers in Python?"
+                        ],
+                        correct: 0,
+                        explanation: "This prompt is specific about the function name, input, output, and includes a requirement for error handling."
+                    },
+                    {
+                        question: "Create a prompt to generate a JavaScript function that fetches data from a JSON API.",
+                        options: [
+                            "Write a JavaScript function called fetchData that uses the Fetch API to get data from 'https://api.example.com/data' and returns the parsed JSON response. Include error handling for network issues.",
+                            "Get data from API",
+                            "JavaScript code to call an API",
+                            "How to fetch JSON data in JS?"
+                        ],
+                        correct: 0,
+                        explanation: "This prompt specifies the function name, API endpoint, technology to use (Fetch API), and includes error handling."
+                    },
+                    {
+                        question: "Write a prompt to create a responsive navigation bar with HTML and CSS.",
+                        options: [
+                            "Create a responsive navigation bar with HTML and CSS that includes a logo on the left, navigation links in the center, and a search bar on the right. It should collapse into a hamburger menu on mobile devices.",
+                            "Make a navbar",
+                            "Navigation menu code",
+                            "Responsive header for website"
+                        ],
+                        correct: 0,
+                        explanation: "This prompt provides clear layout requirements and specifies responsive behavior for different screen sizes."
+                    },
+                    {
+                        question: "Create a prompt to write a function that calculates the factorial of a number.",
+                        options: [
+                            "Write a JavaScript function called factorial that takes a positive integer n and returns its factorial. Use a recursive approach and include input validation.",
+                            "Calculate factorial",
+                            "Math function for factorial",
+                            "How to compute factorial in code?"
+                        ],
+                        correct: 0,
+                        explanation: "This prompt specifies the language, function name, approach (recursive), and includes input validation."
+                    },
+                    {
+                        question: "Write a prompt to generate a Python script that reads a CSV file and calculates the average of a specific column.",
+                        options: [
+                            "Write a Python script that uses the pandas library to read a CSV file named 'data.csv', and calculate the average of the 'price' column. Handle missing values appropriately.",
+                            "Process CSV data",
+                            "Calculate average from file",
+                            "Python code for CSV analysis"
+                        ],
+                        correct: 0,
+                        explanation: "This prompt specifies the library to use, file name, column name, and how to handle potential issues like missing values."
+                    },
+                    {
+                        question: "Create a prompt to build a simple countdown timer with HTML, CSS, and JavaScript.",
+                        options: [
+                            "Create a countdown timer that displays days, hours, minutes, and seconds until a specific date. Include responsive design and animations for when the timer updates.",
+                            "Make a timer",
+                            "Countdown clock code",
+                            "JavaScript timer example"
+                        ],
+                        correct: 0,
+                        explanation: "This prompt specifies the components to display, requires responsive design, and includes animation details."
+                    },
+                    {
+                        question: "Write a prompt to create a function that finds the most frequent word in a string.",
+                        options: [
+                            "Write a JavaScript function called mostFrequentWord that takes a string as input and returns the word that appears most frequently. Ignore case and punctuation.",
+                            "Find common words",
+                            "Word frequency counter",
+                            "How to get most repeated word?"
+                        ],
+                        correct: 0,
+                        explanation: "This prompt specifies the function name, input, output, and includes important details about case and punctuation handling."
+                    },
+                    {
+                        question: "Create a prompt to generate a responsive image gallery with a lightbox feature.",
+                        options: [
+                            "Create an image gallery using HTML, CSS, and JavaScript that displays images in a responsive grid. When clicked, each image should open in a lightbox with navigation arrows and a close button.",
+                            "Make image gallery",
+                            "Photo grid with lightbox",
+                            "Responsive image display"
+                        ],
+                        correct: 0,
+                        explanation: "This prompt specifies the technologies to use, responsive requirement, and details the lightbox functionality with specific features."
+                    }
+                ]
+            };
 
-    function nextQuestion() {
-      const selected = document.querySelector('input[name="option"]:checked');
-      if (selected) {
-        if (parseInt(selected.value) === quizData[currentQuestion].answer) {
-          score++;
-        }
-        currentQuestion++;
-        loadQuestion();
-      } else {
-        alert("Please select an option!");
-      }
-    }
+            let currentModule = 1;
+            let currentQuestionIndex = 0;
+            let userAnswers = {};
+            let quizSubmitted = false;
 
-    function updateProgress() {
-      const progress = ((currentQuestion) / quizData.length) * 100;
-      const progressBar = document.getElementById('progress-bar');
-      progressBar.style.width = progress.toFixed(0) + '%';
-      progressBar.innerText = `${currentQuestion} / ${quizData.length}`;
+            const quizContainer = document.getElementById('quiz-container');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            const restartBtn = document.getElementById('restart-btn');
+            const resultDiv = document.getElementById('result');
+            const scoreValue = document.getElementById('score-value');
+            const resultMessage = document.getElementById('result-message');
+            const currentSpan = document.getElementById('current');
+            const totalSpan = document.getElementById('total');
+            const moduleTitle = document.getElementById('module-title');
+            const moduleButtons = document.querySelectorAll('.module-btn');
 
-      if (progress < 33) {
-        progressBar.style.background = '#e74c3c'; // red
-      } else if (progress < 66) {
-        progressBar.style.background = '#f1c40f'; // yellow
-      } else {
-        progressBar.style.background = '#2ecc71'; // green
-      }
-    }
+            // Initialize user answers structure
+            for (let module in modules) {
+                userAnswers[module] = new Array(modules[module].length).fill(null);
+            }
 
-    loadQuestion();
-  </script>
+            // Show current question
+            function showQuestion() {
+                const questions = modules[currentModule];
+                const question = questions[currentQuestionIndex];
+                
+                currentSpan.textContent = currentQuestionIndex + 1;
+                totalSpan.textContent = questions.length;
+                
+                // Update button visibility
+                if (currentQuestionIndex === 0) {
+                    prevBtn.style.display = 'none';
+                } else {
+                    prevBtn.style.display = 'block';
+                }
+
+                if (currentQuestionIndex === questions.length - 1) {
+                    nextBtn.style.display = 'none';
+                    submitBtn.style.display = 'block';
+                } else {
+                    nextBtn.style.display = 'block';
+                    submitBtn.style.display = 'none';
+                }
+
+                // Generate options HTML
+                let optionsHtml = '';
+                question.options.forEach((option, index) => {
+                    let optionClass = 'option';
+                    if (userAnswers[currentModule][currentQuestionIndex] === index) {
+                        optionClass += ' selected';
+                    }
+                    if (quizSubmitted) {
+                        if (index === question.correct) {
+                            optionClass += ' correct';
+                        } else if (userAnswers[currentModule][currentQuestionIndex] === index && index !== question.correct) {
+                            optionClass += ' incorrect';
+                        }
+                    }
+                    
+                    optionsHtml += `
+                        <div class="${optionClass}" data-index="${index}">
+                            ${option}
+                        </div>
+                    `;
+                });
+
+                // Generate explanation HTML if quiz is submitted
+                let explanationHtml = '';
+                if (quizSubmitted) {
+                    explanationHtml = `<div class="explanation" style="display: block;">${question.explanation}</div>`;
+                }
+
+                // For programming tasks, add a code editor section
+                let programmingHtml = '';
+                if (currentModule == 4) {
+                    programmingHtml = `
+                        <div class="programming-task">
+                            <p><strong>Programming Task:</strong> ${question.question}</p>
+                            <div class="code-editor">
+                                // Write your code solution here<br>
+                                // This is a simulated code editor
+                            </div>
+                        </div>
+                    `;
+                }
+
+                // Update quiz container
+                quizContainer.innerHTML = `
+                    ${currentModule == 4 ? programmingHtml : `<div class="question-text">${question.question}</div>`}
+                    <div class="options">${optionsHtml}</div>
+                    ${explanationHtml}
+                `;
+
+                // Add event listeners to options
+                document.querySelectorAll('.option').forEach(option => {
+                    option.addEventListener('click', selectOption);
+                });
+            }
+
+            // Handle option selection
+            function selectOption(e) {
+                if (quizSubmitted) return;
+                
+                const selectedIndex = parseInt(e.target.getAttribute('data-index'));
+                userAnswers[currentModule][currentQuestionIndex] = selectedIndex;
+                
+                document.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                e.target.classList.add('selected');
+            }
+
+            // Navigate to next question
+            function nextQuestion() {
+                const questions = modules[currentModule];
+                if (currentQuestionIndex < questions.length - 1) {
+                    currentQuestionIndex++;
+                    showQuestion();
+                }
+            }
+
+            // Navigate to previous question
+            function prevQuestion() {
+                if (currentQuestionIndex > 0) {
+                    currentQuestionIndex--;
+                    showQuestion();
+                }
+            }
+
+            // Submit the quiz
+            function submitQuiz() {
+                quizSubmitted = true;
+                
+                let totalScore = 0;
+                let totalQuestions = 0;
+                
+                for (let module in modules) {
+                    const questions = modules[module];
+                    totalQuestions += questions.length;
+                    
+                    userAnswers[module].forEach((answer, index) => {
+                        if (answer === questions[index].correct) {
+                            totalScore++;
+                        }
+                    });
+                }
+                
+                scoreValue.textContent = `${totalScore}/${totalQuestions}`;
+                
+                let message = '';
+                const percentage = (totalScore / totalQuestions) * 100;
+                
+                if (percentage >= 90) {
+                    message = 'Perfect! You are a prompt engineering expert!';
+                } else if (percentage >= 70) {
+                    message = 'Excellent! You have a strong understanding of prompt engineering.';
+                } else if (percentage >= 60) {
+                    message = 'Good job! You have a solid foundation in prompt engineering.';
+                } else if (percentage >= 50) {
+                    message = 'You passed! Review the explanations to improve your knowledge.';
+                } else {
+                    message = 'Keep learning! Review the prompt engineering concepts and try again.';
+                }
+                
+                resultMessage.textContent = message;
+                resultDiv.style.display = 'block';
+                document.querySelector('.controls').style.display = 'none';
+                
+                showQuestion();
+            }
+
+            // Restart the quiz
+            function restartQuiz() {
+                // Reset user answers
+                for (let module in modules) {
+                    userAnswers[module] = new Array(modules[module].length).fill(null);
+                }
+                
+                currentQuestionIndex = 0;
+                quizSubmitted = false;
+                resultDiv.style.display = 'none';
+                document.querySelector('.controls').style.display = 'flex';
+                showQuestion();
+            }
+
+            // Switch to a different module
+            function switchModule(moduleNum) {
+                currentModule = parseInt(moduleNum);
+                currentQuestionIndex = 0;
+                
+                // Update active module button
+                moduleButtons.forEach(btn => {
+                    if (parseInt(btn.getAttribute('data-module')) === currentModule) {
+                        btn.classList.add('active');
+                    } else {
+                        btn.classList.remove('active');
+                    }
+                });
+                
+                // Update module title
+                const moduleTitles = {
+                    1: "Module 1: Fundamentals of Prompt Engineering",
+                    2: "Module 2: Advanced Prompting Techniques",
+                    3: "Module 3: HTML Questions",
+                    4: "Module 4: Programming Tasks"
+                };
+                moduleTitle.textContent = moduleTitles[currentModule];
+                
+                // Show first question of the module
+                showQuestion();
+            }
+
+            // Add event listeners
+            prevBtn.addEventListener('click', prevQuestion);
+            nextBtn.addEventListener('click', nextQuestion);
+            submitBtn.addEventListener('click', submitQuiz);
+            restartBtn.addEventListener('click', restartQuiz);
+
+            // Add event listeners to module buttons
+            moduleButtons.forEach(btn => {
+                btn.addEventListener('click', function() {
+                    switchModule(this.getAttribute('data-module'));
+                });
+            });
+
+            // Initialize the quiz
+            switchModule(1);
+        });
+    </script>
 </body>
 </html>
 
