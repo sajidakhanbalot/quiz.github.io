@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Node.js Basics Quiz</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #6a11cb 0%, #2575fc 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            width: 90%;
+            max-width: 700px;
+            padding: 30px;
+        }
+        
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 2.2rem;
+        }
+        
+        .description {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+            font-size: 1.1rem;
+            line-height: 1.5;
+        }
+        
+        .question {
+            margin-bottom: 25px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .question-text {
+            font-weight: 600;
+            margin-bottom: 15px;
+            font-size: 1.2rem;
+            color: #333;
+        }
+        
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+        
+        .option {
+            padding: 12px 15px;
+            background-color: #f5f7fb;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .option:hover {
+            background-color: #e9effd;
+            transform: translateY(-2px);
+        }
+        
+        .option.selected {
+            background-color: #d1e0ff;
+            border-color: #3d7bea;
+        }
+        
+        .option.correct {
+            background-color: #d4edda;
+            border-color: #28a745;
+        }
+        
+        .option.incorrect {
+            background-color: #f8d7da;
+            border-color: #dc3545;
+        }
+        
+        .controls {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+        }
+        
+        button {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+        
+        #prev-btn {
+            background-color: #6c757d;
+            color: white;
+        }
+        
+        #prev-btn:hover {
+            background-color: #5a6268;
+        }
+        
+        #next-btn {
+            background-color: #007bff;
+            color: white;
+        }
+        
+        #next-btn:hover {
+            background-color: #0069d9;
+        }
+        
+        #submit-btn {
+            background-color: #28a745;
+            color: white;
+            display: none;
+        }
+        
+        #submit-btn:hover {
+            background-color: #218838;
+        }
+        
+        .result {
+            text-align: center;
+            padding: 20px;
+            display: none;
+        }
+        
+        .score {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 20px;
+        }
+        
+        .message {
+            font-size: 1.2rem;
+            margin-bottom: 30px;
+            color: #555;
+        }
+        
+        #restart-btn {
+            background-color: #ffc107;
+            color: #333;
+        }
+        
+        #restart-btn:hover {
+            background-color: #e0a800;
+        }
+        
+        .progress {
+            text-align: right;
+            color: #666;
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+        }
+        
+        .explanation {
+            margin-top: 15px;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border-radius: 8px;
+            display: none;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #444;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Node.js Basics Quiz</h1>
+        <p class="description">Test your knowledge of Node.js fundamentals with this interactive quiz. Select the best answer for each question.</p>
+        
+        <div class="progress">Question <span id="current">1</span> of <span id="total">10</span></div>
+        
+        <div id="quiz-container">
+            <!-- Questions will be inserted here by JavaScript -->
+        </div>
+        
+        <div class="controls">
+            <button id="prev-btn">Previous</button>
+            <button id="next-btn">Next</button>
+            <button id="submit-btn">Submit Quiz</button>
+        </div>
+        
+        <div id="result" class="result">
+            <h2>Quiz Completed!</h2>
+            <div class="score">Your score: <span id="score-value">0</span>/10</div>
+            <p class="message" id="result-message"></p>
+            <button id="restart-btn">Restart Quiz</button>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const questions = [
+                {
+                    question: "What is Node.js?",
+                    options: [
+                        "A JavaScript framework for building front-end applications",
+                        "A runtime environment that allows JavaScript to run on the server",
+                        "A package manager for JavaScript",
+                        "A database management system"
+                    ],
+                    correct: 1,
+                    explanation: "Node.js is a JavaScript runtime built on Chrome's V8 JavaScript engine. It allows JavaScript to run on the server rather than only in the browser."
+                },
+                {
+                    question: "Which of the following is a core module in Node.js?",
+                    options: [
+                        "express",
+                        "mongoose",
+                        "fs",
+                        "react"
+                    ],
+                    correct: 2,
+                    explanation: "The 'fs' module is a core Node.js module for working with the file system. Express and Mongoose are third-party packages, and React is a front-end library."
+                },
+                {
+                    question: "What does the require() function do in Node.js?",
+                    options: [
+                        "It makes an HTTP request to a server",
+                        "It includes external modules that can be in the form of built-in modules, third-party modules, or custom modules",
+                        "It is used to define a new variable",
+                        "It checks if a certain condition is true"
+                    ],
+                    correct: 1,
+                    explanation: "The require() function is used in Node.js to import modules. This can include core Node.js modules, modules installed via npm, or your own custom JavaScript files."
+                },
+                {
+                    question: "Which method is used to handle asynchronous operations in Node.js?",
+                    options: [
+                        "Callbacks",
+                        "For loops",
+                        "While loops",
+                        "If-else statements"
+                    ],
+                    correct: 0,
+                    explanation: "Callbacks are the traditional method for handling asynchronous operations in Node.js. However, modern Node.js also supports Promises and async/await for handling asynchronous code."
+                },
+                {
+                    question: "What is the purpose of the package.json file in a Node.js project?",
+                    options: [
+                        "It contains the source code of the application",
+                        "It stores the database credentials",
+                        "It holds metadata about the project and its dependencies",
+                        "It is used to configure the web server"
+                    ],
+                    correct: 2,
+                    explanation: "The package.json file holds various metadata relevant to the project, including project name, version, description, and most importantly, the list of dependencies required for the project to run."
+                },
+                {
+                    question: "Which global object in Node.js provides information about the current module?",
+                    options: [
+                        "global",
+                        "process",
+                        "module",
+                        "console"
+                    ],
+                    correct: 2,
+                    explanation: "The 'module' object is a reference to the current module. It contains information about the current module, including its exports, filename, and directory path."
+                },
+                {
+                    question: "What is the Event Loop in Node.js?",
+                    options: [
+                        "A function that loops through events in the code",
+                        "A feature that allows Node.js to perform non-blocking I/O operations",
+                        "A module for handling user events",
+                        "A loop that checks for errors in the code"
+                    ],
+                    correct: 1,
+                    explanation: "The Event Loop is what allows Node.js to perform non-blocking I/O operations — despite JavaScript being single-threaded — by offloading operations to the system kernel whenever possible."
+                },
+                {
+                    question: "Which of the following is NOT a built-in module in Node.js?",
+                    options: [
+                        "http",
+                        "path",
+                        "crypto",
+                        "router"
+                    ],
+                    correct: 3,
+                    explanation: "The 'router' is not a built-in module in Node.js. It is typically part of frameworks like Express.js. http, path, and crypto are all core Node.js modules."
+                },
+                {
+                    question: "How can you install a package locally using npm?",
+                    options: [
+                        "npm install -g package-name",
+                        "npm install package-name",
+                        "npm add package-name",
+                        "npm get package-name"
+                    ],
+                    correct: 1,
+                    explanation: "The command 'npm install package-name' installs a package locally in the current project folder. The -g flag would install it globally instead."
+                },
+                {
+                    question: "What is the purpose of the __dirname variable in Node.js?",
+                    options: [
+                        "It returns the name of the current directory",
+                        "It returns the directory name of the current module",
+                        "It returns the name of the root directory",
+                        "It returns the name of the user's home directory"
+                    ],
+                    correct: 1,
+                    explanation: "The __dirname variable returns the directory name of the current module. This is the absolute path of the directory containing the currently executing file."
+                }
+            ];
+
+            let currentQuestion = 0;
+            let userAnswers = new Array(questions.length).fill(null);
+            let quizSubmitted = false;
+
+            const quizContainer = document.getElementById('quiz-container');
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            const submitBtn = document.getElementById('submit-btn');
+            const restartBtn = document.getElementById('restart-btn');
+            const resultDiv = document.getElementById('result');
+            const scoreValue = document.getElementById('score-value');
+            const resultMessage = document.getElementById('result-message');
+            const currentSpan = document.getElementById('current');
+            const totalSpan = document.getElementById('total');
+
+            totalSpan.textContent = questions.length;
+
+            function showQuestion() {
+                currentSpan.textContent = currentQuestion + 1;
+                
+                if (currentQuestion === 0) {
+                    prevBtn.style.display = 'none';
+                } else {
+                    prevBtn.style.display = 'block';
+                }
+
+                if (currentQuestion === questions.length - 1) {
+                    nextBtn.style.display = 'none';
+                    submitBtn.style.display = 'block';
+                } else {
+                    nextBtn.style.display = 'block';
+                    submitBtn.style.display = 'none';
+                }
+
+                const question = questions[currentQuestion];
+                let optionsHtml = '';
+                
+                question.options.forEach((option, index) => {
+                    let optionClass = 'option';
+                    if (userAnswers[currentQuestion] === index) {
+                        optionClass += ' selected';
+                    }
+                    if (quizSubmitted) {
+                        if (index === question.correct) {
+                            optionClass += ' correct';
+                        } else if (userAnswers[currentQuestion] === index && index !== question.correct) {
+                            optionClass += ' incorrect';
+                        }
+                    }
+                    
+                    optionsHtml += `
+                        <div class="${optionClass}" data-index="${index}">
+                            ${option}
+                        </div>
+                    `;
+                });
+
+                let explanationHtml = '';
+                if (quizSubmitted) {
+                    explanationHtml = `<div class="explanation" style="display: block;">${question.explanation}</div>`;
+                }
+
+                quizContainer.innerHTML = `
+                    <div class="question">
+                        <div class="question-text">${currentQuestion + 1}. ${question.question}</div>
+                        <div class="options">${optionsHtml}</div>
+                        ${explanationHtml}
+                    </div>
+                `;
+
+                document.querySelectorAll('.option').forEach(option => {
+                    option.addEventListener('click', selectOption);
+                });
+            }
+
+            function selectOption(e) {
+                if (quizSubmitted) return;
+                
+                const selectedIndex = parseInt(e.target.getAttribute('data-index'));
+                userAnswers[currentQuestion] = selectedIndex;
+                
+                document.querySelectorAll('.option').forEach(opt => {
+                    opt.classList.remove('selected');
+                });
+                
+                e.target.classList.add('selected');
+            }
+
+            function showNextQuestion() {
+                if (currentQuestion < questions.length - 1) {
+                    currentQuestion++;
+                    showQuestion();
+                }
+            }
+
+            function showPrevQuestion() {
+                if (currentQuestion > 0) {
+                    currentQuestion--;
+                    showQuestion();
+                }
+            }
+
+            function submitQuiz() {
+                quizSubmitted = true;
+                
+                let score = 0;
+                userAnswers.forEach((answer, index) => {
+                    if (answer === questions[index].correct) {
+                        score++;
+                    }
+                });
+                
+                scoreValue.textContent = score;
+                
+                let message = '';
+                if (score === questions.length) {
+                    message = 'Perfect! You have a solid understanding of Node.js basics.';
+                } else if (score >= questions.length * 0.7) {
+                    message = 'Well done! You have a good grasp of Node.js fundamentals.';
+                } else if (score >= questions.length * 0.5) {
+                    message = 'Good effort! Review the explanations and try again.';
+                } else {
+                    message = 'Keep learning! Review Node.js basics and try again.';
+                }
+                
+                resultMessage.textContent = message;
+                resultDiv.style.display = 'block';
+                document.querySelector('.controls').style.display = 'none';
+                
+                showQuestion();
+            }
+
+            function restartQuiz() {
+                currentQuestion = 0;
+                userAnswers = new Array(questions.length).fill(null);
+                quizSubmitted = false;
+                resultDiv.style.display = 'none';
+                document.querySelector('.controls').style.display = 'flex';
+                showQuestion();
+            }
+
+            prevBtn.addEventListener('click', showPrevQuestion);
+            nextBtn.addEventListener('click', showNextQuestion);
+            submitBtn.addEventListener('click', submitQuiz);
+            restartBtn.addEventListener('click', restartQuiz);
+
+            showQuestion();
+        });
+    </script>
+</body>
+</html>
